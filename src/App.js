@@ -7,6 +7,7 @@ import Header from './components/Header'
 import Footer from './components/Footer';
 import LearnPage from './pages/LearnPage';
 import CreateVulnPage from './pages/CreateVulnPage';
+import VulnerabilityPage from './pages/VulnerabilityPage';
 
 function App() {
   return (
@@ -14,11 +15,12 @@ function App() {
         <BrowserRouter>
             <Header />
             <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/learn" element={<LearnPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/createVuln" element={<CreateVulnPage />} />
+                <Route path="/"                   element={<HomePage />} />
+                <Route path="/learn"              element={<LearnPage />} />
+                <Route path="/login"              element={<LoginPage />} />
+                <Route path="/register"           element={<RegisterPage />} />
+                <Route path="/createVuln"         element={<CreateVulnPage />} />
+                <Route path="/learn/vulnerability/:id"  element={<VulnerabilityPage />} />
             </Routes>
             <Footer />
         </BrowserRouter>

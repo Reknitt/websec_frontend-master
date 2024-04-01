@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { Container, Button } from "react-bootstrap";
 import LeftSidebar from "../components/LeftSidebar";
 import '../styles/LeftSidebar.css'
-import { Link, redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const LearnPage = () => {
     
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const navigate = useNavigate();
 
     const handleSettingCategory = (category) => {
         setSelectedCategory(category);
@@ -18,6 +19,18 @@ const LearnPage = () => {
             <LeftSidebar 
                 setCategory={handleSettingCategory}
             />
+
+            <div>
+                {selectedCategory 
+                ? 
+                <div>
+                    {selectedCategory}
+                </div> 
+                : 
+                <div>
+                    select category
+                </div>}
+            </div>
         </Container>
     );
     
