@@ -15,11 +15,11 @@ function App() {
         <BrowserRouter>
             <Header />
             <Routes>
-                <Route path="/"                   element={<HomePage />} />
-                <Route path="/learn"              element={<LearnPage />} />
-                <Route path="/login"              element={<LoginPage />} />
-                <Route path="/register"           element={<RegisterPage />} />
-                <Route path="/createVuln"         element={<CreateVulnPage />} />
+                <Route path="/"                         element={<HomePage />} />
+                <Route path="/learn"                    element={<LearnPage />} />
+                <Route path="/login"                    element={<LoginPage />} />
+                <Route path="/register"                 element={<RegisterPage />} />
+                <Route path="/createVuln"               element={<CreateVulnPage />} />
                 <Route path="/learn/vulnerability/:id"  element={<VulnerabilityPage />} />
             </Routes>
             <Footer />
