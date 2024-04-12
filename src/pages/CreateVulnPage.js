@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextForm from "../common/TextForm";
 import TextAreaForm from "../common/TextAreaForm";
-import ListForm from "../common/ListForm";
+import ReferenceForm from "../common/ReferenceForm";
+import AttackForm from "../common/AttackForm";
+import ListOfMappedCWEsForm from "../common/ListOfMappedCWEsForm";
 
 
 const CreateVulnPage = () => {
@@ -14,7 +16,7 @@ const CreateVulnPage = () => {
       const [attacks, setAttacks]                   = useState([]);
       const [references, setReferences]             = useState([]);
       const [listOfMappedCWEs, setListOfMappedCWEs] = useState([]);
-      const [practice, setPractice]                 = useState('');
+      const [practice, setPractice]                 = useState();
 
       const handleCategoryChange = (e) => {
         setCategory(e.target.value);
@@ -36,31 +38,82 @@ const CreateVulnPage = () => {
         setHowToPrevent(e.target.value);
       }
 
-      const handleAttacksChange = (e) => {
-        setAttacks([...attacks, e.target.value]);
+      const handleAttacksChange = (stepsOfAttack) => {
+        const newAttacks = [];
+        stepsOfAttack.forEach((step, index) => {
+          newAttacks.push({
+            stepsOfAttack: 
+            [
+              {
+                text: step.text,
+                code: step.code
+              }
+            ]
+          })
+        })
+        setAttacks(newAttacks);
       }
 
-      const handleReferencesChange = (value) => {
-        setReferences([...references, value]);
+      const handleReferencesChange = (values) => {
+        setReferences(values);
       }
 
-      const handleListOfMappedCWEsChange = (e) => {
-        setListOfMappedCWEs([...listOfMappedCWEs, e.target.value]);
+      const handleListOfMappedCWEsChange = (values) => {
+        setListOfMappedCWEs(values);
       }
 
       const handlePracticeChange = (e) => {
-        setPractice(e.target.value);
+        setPractice({
+          practice: e.target.value
+        });
       }
-    
-      
     
       const handleSubmit = (e) => {
         e.preventDefault();
 
-        const vulnerability = {category, title, overview};
+        const vulnerability = 
+        {
+          category, 
+          title, 
+          overview,
+          description,
+          howToPrevent,
+          attacks,
+          references,
+          listOfMappedCWEs,
+          practice
+        };
         console.log(vulnerability);
-        console.log(e.target.value)
-        // Here you can submit the form data to your backend or handle it as needed
+
+        const backendUrl = 'https://localhost:7019/api/Vulnerability';
+        const requestOptions = 
+        {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json', 
+              'accept': '*/*'
+            },
+          body: JSON.stringify(vulnerability) // Convert your data to JSON string
+        }
+
+
+
+        fetch(backendUrl, requestOptions)
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('Network response was not ok');
+              }
+              return response.json(); // Parse the JSON response
+          })
+          .then(data => {
+              // Handle the JSON data returned by the server
+              console.log(data);
+          })
+          .catch(error => {
+              // Handle errors
+              console.error('There was a problem with the POST request:', error);
+          });
+        
       };
     
       
@@ -76,11 +129,12 @@ const CreateVulnPage = () => {
             <TextAreaForm name="Description" handleChange={handleDescriptionChange} required={false} />
             <TextAreaForm name="HowToPrevent" handleChange={handleHowToPreventChange} required={false} />
             
-            {/*<ListForm name="Attacks" values={attacks} onChange={handleAttacksChange}>Attacks: </ListForm>*/}
-            <ListForm name="References" values={references} onChange={handleReferencesChange} />
+            <AttackForm onChange={handleAttacksChange} />
+            <ReferenceForm onChange={handleReferencesChange} />
+            <ListOfMappedCWEsForm onChange={handleListOfMappedCWEsChange} />
+
+            <TextForm name="Practice" handleChange={handlePracticeChange} />
             
-            
-            {/* You can add more fields for Attacks, References, ListOfMappedCWEs, and Practice */}
             <button type="submit" className="btn btn-primary">Submit</button>
           </form>
         </div>

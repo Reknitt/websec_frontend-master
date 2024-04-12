@@ -3,10 +3,13 @@ import { Container, Button } from "react-bootstrap";
 import LeftSidebar from "../components/LeftSidebar";
 import '../styles/LeftSidebar.css'
 import { useNavigate } from "react-router-dom";
+import VulnerabilityDetails from "../components/VulnerabilityDetails";
+import LeftSide from "../components/LeftSide";
+import RightSide from "../components/RightSide";
 
 const LearnPage = () => {
     
-    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [selectedVulnerability, setSelectedVulnerability] = useState(null);
     const navigate = useNavigate();
 
     const [vulnerabilities, setVulnerabilities] = useState([]);
@@ -28,32 +31,31 @@ const LearnPage = () => {
     }, []);
 
     const handleSettingCategory = (category) => {
-        setSelectedCategory(category);
-        console.log(category)
+        setSelectedVulnerability(vulnerabilities[category]);
+        console.log(JSON.stringify(vulnerabilities[category]))
     }
 
     return (
-        <Container className=''>
-            <LeftSidebar 
-                setCategory={handleSettingCategory} vulnerabilities={vulnerabilities} 
-            />
+        <Container className='page-layout'>
+            <LeftSide>
+                <LeftSidebar 
+                    setCategory={handleSettingCategory} vulnerabilities={vulnerabilities} 
+                />
+            </LeftSide>
 
-            <div>
-                {selectedCategory 
-                ? 
+            <RightSide>
                 <div>
-                    {selectedCategory}
-                </div> 
-                : 
-                <div>
-                    select category
-                </div>}
-            </div>
-            <div>
-                {vulnerabilities.map((item, index) => (
-                    <div key={index}>{item.overview}</div>
-                ))}
-            </div>
+                    {selectedVulnerability 
+                    ? 
+                    <div>
+                        <VulnerabilityDetails data={selectedVulnerability} />
+                    </div> 
+                    : 
+                    <div>
+                        select category
+                    </div>}
+                </div>
+            </RightSide>
         </Container>
     );
     
